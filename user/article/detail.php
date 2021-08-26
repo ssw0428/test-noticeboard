@@ -1,23 +1,21 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/test-noticeboard/webInit.php';
 
-if ( isset($_GET['id']) == false ) {
-  echo "id를 입력해주세요.";
-  exit;
-}
+$id = getIntValueOr($_GET['id'], 0);
 
-$id = intval($_GET['id']);
+if ( $id == 0 ) {
+  jsHistoryBackExit("번호를 입력해주세요.");
+}
 
 $sql = "
 SELECT *
 FROM article AS A
 WHERE A.id = '${id}'
 ";
-$article = DB__getRow( $sql);
+$article = DB__getRow($sql);
 
 if ( $article == null ) {
-  echo "${id}번 게시물은 존재하지 않습니다.";
-  exit;
+  jsHistoryBackExit("${id}번 게시물은 존재하지 않습니다.");
 }
 ?>
 <?php

@@ -63,3 +63,8 @@ loginPw = 'user2',
 nickname = 'user-22',
 email  = 'user2@test.com',
 cellphoneNo = '01020202020';
+
+
+SELECT *
+FROM member
+WHERE id= loginedMemerid
