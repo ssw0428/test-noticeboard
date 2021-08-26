@@ -33,6 +33,14 @@ if ( $article == null ) {
 <body>
     <h1>게시물 상세페이지, <?=$id?>번 게시물</h1>
 
+    <hr>
+    <div>
+      <a href="list.php">리스트</a>
+      <a href="doModify.php">수정</a>
+      <a onclick="if (confirm('정말 삭제 하시겠습니까?') == false)return false;" href="doDelete.php?id=<?=$article['id']?>">삭제</a>
+    </div>
+    <hr>
+
     <div>번호 : <?=$article['id']?></div>
     <div>작성날짜 : <?=$article['regDate']?></div>
     <div>수정날짜 : <?=$article['updateDate']?></div>
