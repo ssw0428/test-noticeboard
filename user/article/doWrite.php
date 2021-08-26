@@ -21,10 +21,7 @@ updateDate = NOW(),
 title = '${title}',
 `body` = '${body}'
 ";
-mysqli_query($dbConn, $sql);
-
-$id = mysqli_insert_id($dbConn);
-
+$id = DB__insert($sql);
 ?>
 <script>
 alert('<?=$id?>번 게시물이 생성되었습니다.');

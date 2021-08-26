@@ -13,8 +13,7 @@ SELECT *
 FROM article AS A
 WHERE A.id = '${id}'
 ";
-$rs = mysqli_query($dbConn, $sql);
-$article = mysqli_fetch_assoc($rs);
+$article = DB__getRow($sql);
 
 if ( $article == null ) {
   echo "${id}번 게시물은 존재하지 않습니다.";

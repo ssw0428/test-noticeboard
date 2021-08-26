@@ -6,13 +6,7 @@ SELECT *
 FROM article AS A
 ORDER BY A.id DESC
 ";
-$rs = mysqli_query($dbConn, $sql);
-
-$articles = [];
-
-while ( $article = mysqli_fetch_assoc($rs) ) {
-  $articles[] = $article;
-}
+$articles = DB__getRows($sql);
 ?>
 <?php
 $pageTitle = "게시물 리스트";
