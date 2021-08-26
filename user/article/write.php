@@ -31,9 +31,10 @@ while ( true ) {
 <body>
   <h1>게시물 작성</h1>
   <hr>
-  <!--
-    http://localhost:8023/test-noticeboard/user/article/doWrite.php?title=제목1&body=내용2
-  -->  
+  <div>
+    <a href="list.php">글 리스트</a>
+  </div>
+  <hr>
 
   <form action="doWrite.php" method="POST">
     <div>
