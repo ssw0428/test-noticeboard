@@ -4,6 +4,16 @@ class DB__SeqSql {
   private string $templateStr = "";
   private array $params = [];
 
+  public function __toString(): string
+  {
+    $str = '[';
+    $str .= 'SQL=(' . $this->getTemplate() . ')';
+    $str .= ', PARAMS=(' . implode(',', $this->getParams()) . ')';
+    $str .= ']';
+    
+    return $str;
+  }
+
   public function add(string $sqlBit, string $param = null) {
     $this->templateStr .= " " . $sqlBit;
 
@@ -13,7 +23,7 @@ class DB__SeqSql {
   }
 
   public function getTemplate(): string {
-    return $this->templateStr;
+    return trim($this->templateStr);
   }
 
   public function getForBindParam1stArg(): string {
@@ -31,64 +41,67 @@ class DB__SeqSql {
   public function getParams(): array {
     return $this->params;
   }
+
+  public function getParamsCount(): int {
+    return count($this->params);
+  }
 }
 
 function DB__secSql() {
-  /*
-  $stmt = $dbConn->prepare($sql);
-  $stmt->bind_param('ss', $loginId, $loginPw);
-  $stmt->execute();
-  $result = $stmt->get_result();
-  */
-
   return new DB__SeqSql();
 }
 
-function DB__getRow2(DB__SeqSql $sql) {
+function DB__getStmtFromSecSql(DB__SeqSql $sql): mysqli_stmt {
   global $dbConn;
   $stmt = $dbConn->prepare($sql->getTemplate());
-  $stmt->bind_param($sql->getForBindParam1stArg(), ...$sql->getParams());
-  $stmt->execute();
-  $result = $stmt->get_result();
-  return $result->fetch_assoc();
+  if ( $sql->getParamsCount() ) {
+    $stmt->bind_param($sql->getForBindParam1stArg(), ...$sql->getParams());
+  }
+  
+  return $stmt;
 }
 
-function DB__getRow($sql) {
-  global $dbConn;
-  $rs = mysqli_query($dbConn, $sql);
-  $row = mysqli_fetch_assoc($rs);
+function DB__getRow(DB__SeqSql $sql) {
+  $rows = DB__getRows($sql);
 
-  return $row;
-}
-
-function DB__getRows($sql) {
-  global $dbConn;
-  $rs = mysqli_query($dbConn, $sql);
-
-  $rows = [];
-
-  while ( $row = mysqli_fetch_assoc($rs) ) {
-    $rows[] = $row;
+  if ( isset($rows[0]) ) {
+    return $rows[0];
   }
 
+  return null;
+}
+
+function DB__getRows(DB__SeqSql $sql) {
+  $stmt = DB__getStmtFromSecSql($sql);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $rows = [];
+
+  while ( $row = $result->fetch_assoc() ) {
+    $rows[] = $row;
+  }
+  
   return $rows;
 }
 
-function DB__insert($sql) {
+function DB__execute(DB__SeqSql $sql) {
+  $stmt = DB__getStmtFromSecSql($sql);
+  $stmt->execute();
+}
+
+function DB__insert(DB__SeqSql $sql) {
   global $dbConn;
-  mysqli_query($dbConn, $sql);
+  DB__execute($sql);
 
   return mysqli_insert_id($dbConn);
 }
 
-function DB__update($sql) {
-  global $dbConn;
-  mysqli_query($dbConn, $sql);
+function DB__update(DB__SeqSql $sql) {
+  DB__execute($sql);
 }
 
 function DB__delete($sql) {
-  global $dbConn;
-  mysqli_query($dbConn, $sql);
+  DB__execute($sql);
 }
 
 function getIntValueOr(&$value, $defaultValue) {

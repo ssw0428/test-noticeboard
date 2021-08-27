@@ -7,11 +7,11 @@ if ( $id == 0 ) {
   jsHistoryBackExit("번호를 입력해주세요.");
 }
 
-$sql = "
-SELECT *
-FROM article AS A
-WHERE A.id = '${id}'
-";
+$sql = DB__secSql();
+$sql->add("SELECT *");
+$sql->add("FROM article AS A");
+$sql->add("WHERE A.id = ?", $id);
+
 $article = DB__getRow($sql);
 
 if ( $article == null ) {

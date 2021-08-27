@@ -1,11 +1,11 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/test-noticeboard/webInit.php';
 
-$sql = "
-SELECT *
-FROM article AS A
-ORDER BY A.id DESC
-";
+$sql = DB__secSql();
+$sql->add("SELECT *");
+$sql->add("FROM article AS A");
+$sql->add("ORDER BY A.id DESC");
+
 $articles = DB__getRows($sql);
 ?>
 <?php

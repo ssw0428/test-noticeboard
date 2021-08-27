@@ -20,7 +20,7 @@ $sql->add("FROM `member` AS M");
 $sql->add("WHERE M.loginId = ?", $loginId);
 $sql->add("AND M.loginPw = ?", $loginPw);
 
-$member = DB__getRow2($sql);
+$member = DB__getRow($sql);
 
 if ( empty($member) ) {
   jsHistoryBackExit("일치하는 회원이 존재하지 않습니다.");
