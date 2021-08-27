@@ -11,22 +11,20 @@ if ( isset($_GET['loginPw']) == false ) {
   exit;
 }
 
-// 기존 코드는 아래와 같이 입력이 되면, 해킹이 된다.
-// loginId=user1
-// loginPw=' OR '' = '
-
-//$loginId = $_GET['loginId'];
-//$loginPw = $_GET['loginPw'];
-$loginId = mysqli_real_escape_string($dbConn, $_GET['loginId']);
-$loginPw = mysqli_real_escape_string($dbConn, $_GET['loginPw']);
+$loginId = $_GET['loginId'];
+$loginPw = $_GET['loginPw'];
 
 $sql = "
 SELECT *
 FROM `member` AS M
-WHERE M.loginId = '${loginId}'
-AND M.loginPw = '${loginPw}'
+WHERE M.loginId = ?
+AND M.loginPw = ?
 ";
-$member = DB__getRow($sql);
+$stmt = $dbConn->prepare($sql);
+$stmt->bind_param('ss', $loginId, $loginPw);
+$stmt->execute();
+$result = $stmt->get_result();
+$member = $result->fetch_assoc();
 
 if ( empty($member) ) {
   jsHistoryBackExit("일치하는 회원이 존재하지 않습니다.");
