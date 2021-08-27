@@ -14,17 +14,13 @@ if ( isset($_GET['loginPw']) == false ) {
 $loginId = $_GET['loginId'];
 $loginPw = $_GET['loginPw'];
 
-$sql = "
-SELECT *
-FROM `member` AS M
-WHERE M.loginId = ?
-AND M.loginPw = ?
-";
-$stmt = $dbConn->prepare($sql);
-$stmt->bind_param('ss', $loginId, $loginPw);
-$stmt->execute();
-$result = $stmt->get_result();
-$member = $result->fetch_assoc();
+$sql = DB__secSql();
+$sql->add("SELECT *");
+$sql->add("FROM `member` AS M");
+$sql->add("WHERE M.loginId = ?", $loginId);
+$sql->add("AND M.loginPw = ?", $loginPw);
+
+$member = DB__getRow2($sql);
 
 if ( empty($member) ) {
   jsHistoryBackExit("일치하는 회원이 존재하지 않습니다.");

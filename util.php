@@ -1,4 +1,58 @@
 <?php
+
+class DB__SeqSql {
+  private string $templateStr = "";
+  private array $params = [];
+
+  public function add(string $sqlBit, string $param = null) {
+    $this->templateStr .= " " . $sqlBit;
+
+    if ( $param ) {
+      $this->params[] = $param;
+    }
+  }
+
+  public function getTemplate(): string {
+    return $this->templateStr;
+  }
+
+  public function getForBindParam1stArg(): string {
+    $paramTypesStr = "";
+
+    $count = count($this->params);
+
+    for ( $i = 0; $i < $count; $i++ ) {
+      $paramTypesStr .= "s";
+    }
+
+    return $paramTypesStr;
+  }
+
+  public function getParams(): array {
+    return $this->params;
+  }
+}
+
+function DB__secSql() {
+  /*
+  $stmt = $dbConn->prepare($sql);
+  $stmt->bind_param('ss', $loginId, $loginPw);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  */
+
+  return new DB__SeqSql();
+}
+
+function DB__getRow2(DB__SeqSql $sql) {
+  global $dbConn;
+  $stmt = $dbConn->prepare($sql->getTemplate());
+  $stmt->bind_param($sql->getForBindParam1stArg(), ...$sql->getParams());
+  $stmt->execute();
+  $result = $stmt->get_result();
+  return $result->fetch_assoc();
+}
+
 function DB__getRow($sql) {
   global $dbConn;
   $rs = mysqli_query($dbConn, $sql);
