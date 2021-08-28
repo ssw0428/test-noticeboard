@@ -1,5 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/test-noticeboard/webInit.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/../webInit.php';
 
 $title = getStrValueOr($_GET['title'], "");
 $body = getStrValueOr($_GET['body'], "");

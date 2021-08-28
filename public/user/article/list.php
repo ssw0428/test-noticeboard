@@ -1,5 +1,7 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/test-noticeboard/webInit.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/../webInit.php';
+
+$articleController = new APP__ArticleController();
 
 $sql = DB__secSql();
 $sql->add("SELECT *");
