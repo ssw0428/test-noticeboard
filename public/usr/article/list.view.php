@@ -1,14 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/../webInit.php';
 
-$articleController = new APP__ArticleController();
-
-$sql = DB__secSql();
-$sql->add("SELECT *");
-$sql->add("FROM article AS A");
-$sql->add("ORDER BY A.id DESC");
-
-$articles = DB__getRows($sql);
 ?>
 <?php
 $pageTitle = "게시물 리스트";
