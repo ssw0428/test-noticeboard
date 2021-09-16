@@ -8,7 +8,7 @@ $pageTitle = "게시물 수정, ${id}번 게시물";
 </div>
 <hr>
 
-<form action="doModify.php">
+<form action="doModify.php" method="POST">
 <input type="hidden" name="id" value="<?=$article['id']?>"> 
 <div>
     <span>번호</span>
