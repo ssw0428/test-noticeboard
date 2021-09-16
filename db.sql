@@ -1,7 +1,7 @@
 # DB 생성
-DROP DATABASE IF EXISTS `test-noticeboard`;
-CREATE DATABASE `test-noticeboard`;
-USE `test-noticeboard`;
+DROP DATABASE IF EXISTS test-noticeboard;
+CREATE DATABASE test-noticeboard;
+USE test-noticeboard;
 
 # 게시물 테이블 생성
 CREATE TABLE article (
@@ -37,9 +37,6 @@ updateDate = NOW(),
 title = '제목4',
 `body` = '내용4';
 
-SELECT *
-FROM article;
-
 # 회원 테이블 생성
 CREATE TABLE `member` (
     id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -57,14 +54,34 @@ CREATE TABLE `member` (
 INSERT INTO `member`
 SET regDate = NOW(),
 updateDate = NOW(),
+loginId = 'user1',
+loginPw = 'user1',
+`name` = '홍길동',
+nickname = '강바람',
+email = 'user1@test.com',
+cellphoneNo = '01011111111';
+
+INSERT INTO `member`
+SET regDate = NOW(),
+updateDate = NOW(),
 loginId = 'user2',
 loginPw = 'user2',
-`name` = 'user2',
-nickname = 'user-22',
-email  = 'user2@test.com',
-cellphoneNo = '01020202020';
+`name` = '홍길순',
+nickname = '이또한',
+email = 'user2@test.com',
+cellphoneNo = '01022222222';
+
+# 게시물 테이블에 작성자 정보 저장
+ALTER TABLE article ADD COLUMN memberId INT(10) UNSIGNED NOT NULL AFTER updateDate;
+
+# 기존 게시물을 특정 회원들과 연결, 랜덤으로
+UPDATE article
+SET memberId = id % 2 + 1
+WHERE memberId = 0;
 
 
 SELECT *
-FROM member
-WHERE id= loginedMemerid
+FROM article;
+
+SELECT *
+FROM `member`;

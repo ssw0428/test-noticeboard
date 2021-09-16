@@ -1,49 +1,38 @@
 <?php
-class APP__ArticleRepository {
-  public function getForPrintArticles(): array {
-    $sql = DB__secSql();
-    $sql->add("SELECT *");
-    $sql->add("FROM article AS A");
-    $sql->add("ORDER BY A.id DESC");
-    $articles = DB__getRows($sql);
+require_once __DIR__ . '/app/repository/MemberRepository.php';
+require_once __DIR__ . '/app/repository/ArticleRepository.php';
 
-    return $articles;
+require_once __DIR__ . '/app/service/MemberService.php';
+require_once __DIR__ . '/app/service/ArticleService.php';
+
+require_once __DIR__ . '/app/controller/MemberController.php';
+require_once __DIR__ . '/app/controller/ArticleController.php';
+
+require_once __DIR__ . '/app/global.php';
+
+function App__getViewPath($viewName) {
+  return __DIR__ . '/public/' . $viewName . '.view.php';
+}
+
+function App__runBeforActionInterCeptor() {
+  global $App__memberService;
+
+  global $App__isLogined;
+  global $App__loginedMemberId;
+  global $App__loginedMember;
+  
+  if ( isset($_SESSION['loginedMemberId']) ) {
+    $App__isLogined = true;
+    $App__loginedMemberId = intval($_SESSION['loginedMemberId']);
+    $App__loginedMember = $App__memberService->getForPrintMemberById($App__loginedMemberId);
   }
 }
 
-class APP__ArticleService {
-  private APP__ArticleRepository $articleRepository;
-
-  public function __construct() {
-    $this->articleRepository = new APP__ArticleRepository();
-  }
-
-  public function getForPrintArticles(): array {
-    return $this->articleRepository->getForPrintArticles();
-  }
+function App__runInterceptors() {
+  App__runBeforActionInterCeptor();
 }
 
-class APP__UsrArticleController {
-  private APP__ArticleService $articleService;
-
-  public static function getViewPath($viewName) {
-    return $_SERVER['DOCUMENT_ROOT'] . '/' . $viewName . '.view.php';
-  }
-
-  public function __construct() {
-    $this->articleService = new APP__ArticleService();
-  }
-
-  public function actionShowList(): array {
-    $articles = $this->articleService->getForPrintArticles();
-
-    require_once static::getViewPath("usr/article/list");
-
-    return $articles;
-  }
-}
-
-function runApp($action) {
+function App__runAction(string $action) {
   list($controllerTypeCode, $controllerName, $actionFuncName) = explode('/', $action);
 
   $controllerClassName = "APP__" . ucfirst($controllerTypeCode) . ucfirst($controllerName) . "Controller";
@@ -58,4 +47,9 @@ function runApp($action) {
 
   $usrArticleController = new $controllerClassName();
   $usrArticleController->$actionMethodName();
+}
+
+function App__run(string $action) {
+  App__runInterceptors();
+  App__runAction($action);  
 }
