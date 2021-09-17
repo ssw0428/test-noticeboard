@@ -14,4 +14,8 @@ class APP__MemberService {
   public function getForPrintMemberById(int $id): array|null {
     return $this->memberRepository->getForPrintMemberById($id);
   }
+
+  public function secession(int $id) {
+    $this->memberRepository->secession($id);
+  }
 }

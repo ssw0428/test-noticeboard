@@ -8,12 +8,15 @@ $pageTitle = "게시물 리스트";
 </div>
 <hr>
 
+<div>전체 게시물 수, <?=$totalCount?></div>
+
 <div>
   <?php foreach ( $articles as $article ) { ?>
     <?php
     $detailUri = "detail.php?id=${article['id']}";
     ?>
     <a href="<?=$detailUri?>">번호 : <?=$article['id']?></a><br>
+    작성자 : <?=$article['extra__writerName']?><br>
     작성 : <?=$article['regDate']?><br>
     수정 : <?=$article['updateDate']?><br>
     <a href="<?=$detailUri?>">제목 : <?=$article['title']?></a><br>

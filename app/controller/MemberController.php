@@ -16,15 +16,25 @@ class APP__UsrMemberController {
     jsLocationReplaceExit("../article/list.php");
   }
 
+  public function actionDoSecession() {
+    unset($_SESSION['loginedMemberId']);
+
+    $this->memberService->secession($_REQUEST['App__loginedMemberId']);
+
+    jsLocationReplaceExit("../article/list.php", "회원탈퇴가 완료되었습니다.");
+  }
+
   public function actionDoLogin() {
-    if ( isset($_REQUEST['loginId']) == false ) {
-      echo "loginId를 입력해주세요.";
-      exit;
+    $loginId = getStrValueOr($_REQUEST['loginId'], "");
+
+    if ( empty($loginId) ) {
+      jsHistoryBackExit("loginId를 입력해주세요.");
     }
+
+    $loginPw = getStrValueOr($_REQUEST['loginPw'], "");
     
-    if ( isset($_REQUEST['loginPw']) == false ) {
-      echo "loginPw를 입력해주세요.";
-      exit;
+    if ( empty($loginPw) ) {
+      jsHistoryBackExit("loginPw를 입력해주세요.");
     }
     
     $loginId = $_REQUEST['loginId'];

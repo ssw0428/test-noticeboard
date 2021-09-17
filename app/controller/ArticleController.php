@@ -34,6 +34,12 @@ class APP__UsrArticleController {
       jsHistoryBackExit("${id}번 게시물은 존재하지 않습니다.");
     }
 
+    $actorCanModifyRs = $this->articleService->getActorCanModify($_REQUEST['App__loginedMember'], $article);
+
+    if ( $actorCanModifyRs->isFail() ) {
+      jsHistoryBackExit($actorCanModifyRs->getMsg());
+    }
+
     $this->articleService->modifyArticle($id, $title, $body);
 
     jsLocationReplaceExit("detail.php?id=${id}", "${id}번 게시물이 수정되었습니다.");
@@ -50,6 +56,12 @@ class APP__UsrArticleController {
 
     if ( $article == null ) {
       jsHistoryBackExit("${id}번 게시물은 존재하지 않습니다.");
+    }
+
+    $actorCanDeleteRs = $this->articleService->getActorCanDelete($_REQUEST['App__loginedMember'], $article);
+
+    if ( $actorCanDeleteRs->isFail() ) {
+      jsHistoryBackExit($actorCanDeleteRs->getMsg());
     }
 
     $this->articleService->deleteArticle($id);
@@ -69,13 +81,14 @@ class APP__UsrArticleController {
       jsHistoryBackExit("내용을 입력해주세요.");
     }
 
-    $id = $this->articleService->writeArticle($title, $body);
+    $id = $this->articleService->writeArticle($_REQUEST['App__loginedMemberId'], $title, $body);
 
     jsLocationReplaceExit("detail.php?id=${id}", "${id}번 게시물이 생성되었습니다.");
   }
 
   public function actionShowList() {
     $articles = $this->articleService->getForPrintArticles();
+    $totalCount = $this->articleService->getTotalArticlesCount();
 
     require_once App__getViewPath("usr/article/list");
   }
@@ -107,6 +120,12 @@ class APP__UsrArticleController {
 
     if ( $article == null ) {
       jsHistoryBackExit("${id}번 게시물은 존재하지 않습니다.");
+    }
+
+    $actorCanModifyRs = $this->articleService->getActorCanModify($_REQUEST['App__loginedMember'], $article);
+
+    if ( $actorCanModifyRs->isFail() ) {
+      jsHistoryBackExit($actorCanModifyRs->getMsg());
     }
 
     require_once App__getViewPath("usr/article/modify");

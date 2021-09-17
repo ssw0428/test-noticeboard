@@ -6,3 +6,6 @@ $App__articleRepository = new APP__ArticleRepository();
 // 서비스 전역변수
 $App__memberService = new APP__MemberService();
 $App__articleService = new APP__ArticleService();
+
+// 어플리케이션
+$application = new App__Application();
