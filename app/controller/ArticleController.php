@@ -42,7 +42,7 @@ class APP__UsrArticleController {
 
     $this->articleService->modifyArticle($id, $title, $body);
 
-    jsLocationReplaceExit("detail.php?id=${id}", "${id}번 게시물이 수정되었습니다.");
+    jsLocationReplaceExit("detail?id=${id}", "${id}번 게시물이 수정되었습니다.");
   }
 
   public function actionDoDelete() {
@@ -66,7 +66,7 @@ class APP__UsrArticleController {
 
     $this->articleService->deleteArticle($id);
 
-    jsLocationReplaceExit("list.php", "${id}번 게시물이 삭제되었습니다.");
+    jsLocationReplaceExit("list", "${id}번 게시물이 삭제되었습니다.");
   }
 
   public function actionDoWrite() {
@@ -83,7 +83,7 @@ class APP__UsrArticleController {
 
     $id = $this->articleService->writeArticle($_REQUEST['App__loginedMemberId'], $title, $body);
 
-    jsLocationReplaceExit("detail.php?id=${id}", "${id}번 게시물이 생성되었습니다.");
+    jsLocationReplaceExit("detail?id=${id}", "${id}번 게시물이 생성되었습니다.");
   }
 
   public function actionShowList() {

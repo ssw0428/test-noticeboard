@@ -83,5 +83,43 @@ WHERE memberId = 0;
 ALTER TABLE `member` ADD COLUMN delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0 AFTER updateDate;
 ALTER TABLE `member` ADD COLUMN delDate DATETIME AFTER delStatus;
 
+TRUNCATE article;
+
+INSERT INTO article 
+SET regDate = NOW(),
+updateDate = NOW(),
+memberId = 1,
+title = '토스트 UI 뷰어 사용법',
+`body` = '
+# 기초(큰 제목)
+## 자바스크립트(작은 제목)
+```javascript
+let a = 10;
+console.log(a + 10);
+```
+## HTML과 자바스크립트
+```html
+<div class="aritlce"></div>
+<script>
+let div = document.getElementsByClassName("article")[0];
+</script>
+```
+## SQL
+```sql
+SELECT *
+FROM article
+```
+## PHP
+```php
+<?php
+$a = 10;
+?>
+```
+## Kotlin
+```kotlin
+val a = 10
+```
+';
+
 SELECT *
 FROM article;

@@ -7,13 +7,17 @@ class APP__UsrMemberController {
     $this->memberService = $App__memberService;
   }
 
+  public function actionShowJoin() {
+    require_once App__getViewPath("usr/member/join");
+  }
+
   public function actionShowLogin() {
     require_once App__getViewPath("usr/member/login");
   }
 
   public function actionDoLogout() {
     unset($_SESSION['loginedMemberId']);
-    jsLocationReplaceExit("../article/list.php");
+    jsLocationReplaceExit("../article/list");
   }
 
   public function actionDoSecession() {
@@ -21,7 +25,7 @@ class APP__UsrMemberController {
 
     $this->memberService->secession($_REQUEST['App__loginedMemberId']);
 
-    jsLocationReplaceExit("../article/list.php", "회원탈퇴가 완료되었습니다.");
+    jsLocationReplaceExit("../article/list", "회원탈퇴가 완료되었습니다.");
   }
 
   public function actionDoLogin() {
@@ -48,6 +52,6 @@ class APP__UsrMemberController {
     
     $_SESSION['loginedMemberId'] = $member['id'];
     
-    jsLocationReplaceExit("../article/list.php", "{$member['nickname']}님 환영합니다.");    
+    jsLocationReplaceExit("../article/list", "{$member['nickname']}님 환영합니다.");    
   }
 }
