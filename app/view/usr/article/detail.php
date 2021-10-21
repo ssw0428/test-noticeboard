@@ -28,4 +28,28 @@ $body = str_replace('</script>', '</t-script>', $article['body']);
     </div>
   </div>
 </section>
+
+<section class="section-disqus">
+  <div class="container mx-auto">
+    <div class="con-pad">
+      <div id="disqus_thread"></div>
+      <?php
+      $disqusConfigPageIdentifier = "/usr/article/detail?id={$article['id']}";
+      $disqusConfigPageUrl = "https://{$prodSiteDomain}{$disqusConfigPageIdentifier}";
+      ?>
+      <script>
+        var disqus_config = function () {
+          this.page.url = '<?=$disqusConfigPageUrl?>';
+          this.page.identifier = '<?=$disqusConfigPageIdentifier?>';
+        };
+        (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = 'https://bbb-oa-gg.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    </div>
+  </div>
+</section>
 <?php require_once __DIR__ . "/../foot.php"; ?>

@@ -8,6 +8,10 @@ class App__Application {
     return "dev";
   }
 
+  public function getProdSiteDomain() {
+    return "bbb.oa.gg";
+  }
+
   public function getDbConnectionByEnv(): mysqli {
     $envCode = $this->getEnvCode();
 

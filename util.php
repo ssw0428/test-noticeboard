@@ -1,4 +1,3 @@
-
 <?php
 
 class DB__SeqSql {
@@ -18,7 +17,7 @@ class DB__SeqSql {
   public function add(string $sqlBit, string $param = null) {
     $this->templateStr .= " " . $sqlBit;
 
-    if ( $param ) {
+    if ( $param !== null ) {
       $this->params[] = $param;
     }
   }
@@ -62,10 +61,10 @@ function DB__getStmtFromSecSql(DB__SeqSql $sql): mysqli_stmt {
   return $stmt;
 }
 
-function DB__getRow(DB__SeqSql $sql): array|null {
+function DB__getRow(DB__SeqSql $sql): ?array {
   $rows = DB__getRows($sql);
 
-  if ( isset($rows[0]) ) {
+  if ( is_array($rows[0]) ) {
     return $rows[0];
   }
 
